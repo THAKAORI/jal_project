@@ -12,7 +12,7 @@ import preprocess.information as info
 import sklearn
 
 flight = "HND RWY34L/738-JA306J-20160320-4412270.csv"
-name = "../WorkData/2014-3to5/" + flight
+name = "/home/takahiro/Confidential/WorkData/2016-3to5/HND RWY34L/738-JA301J-20160301-4395104.csv"
 print(name)
 data = pre.extract_data(name)
 data = pre.nameandtime(data)[1]
