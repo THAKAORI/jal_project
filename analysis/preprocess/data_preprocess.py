@@ -11,8 +11,24 @@ import numpy as np
 import datetime
 import math
 
-def extract_data(data):
-    data = pd.read_csv(data, header = 0)
+def nan_helper(y):
+    """Helper to handle indices and logical indices of NaNs.
+
+    Input:
+        - y, 1d numpy array with possible NaNs
+    Output:
+        - nans, logical indices of NaNs
+        - index, a function, with signature indices= index(logical_indices),
+          to convert logical indices of NaNs to 'equivalent' indices
+    Example:
+        >>> # linear interpolation of NaNs
+        >>> nans, x= nan_helper(y)
+        >>> y[nans]= np.interp(x(nans), x(~nans), y[~nans])
+    """
+    return np.isnan(y), lambda z: z.nonzero()[0]
+
+def extract_data(data, *, datacutoff = 0):
+    data = pd.read_csv(data, header = datacutoff)
     return data.values 
 
 def nameandtime(data):
@@ -51,3 +67,10 @@ def nameandtime(data):
     data = np.hstack((timearray, data))
     return fnum ,data
     
+def intercorporate(data, intercorporatecolumn):
+    for i in intercorporatecolumn:
+        y = data[:, i-12].astype('float')
+        nans, x= nan_helper(y)
+        y[nans]= np.interp(x(nans), x(~nans), y[~nans])
+        data[:, i-12] = y.round(2)
+    return data
