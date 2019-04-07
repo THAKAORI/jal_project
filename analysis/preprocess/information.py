@@ -49,6 +49,7 @@ class Basic_data:
             self.getlanding()
             self.firsttouch()
             self.alltouch()
+            self.landingimpact()
         if(geardowndata or alldata):
             self.getgeardown()
             self.firstgeardown()
@@ -187,6 +188,10 @@ class Basic_data:
         self.alt1000clock = self.data[self.alt1000, 0]
         self.alt100time = self.landingclock - self.alt100clock
         self.alt1000time = self.landingclock - self.alt1000clock
+
+    def landingimpact(self):
+        self.landingimpactmaxindex = np.argmax(self.data[self.landing: ,59-12])
+        self.landingimpactmax = np.max(self.data[self.landing: ,59-12])
 
 
         

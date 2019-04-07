@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import math
+import os
 
 def nan_helper(y):
     """Helper to handle indices and logical indices of NaNs.
@@ -27,8 +28,9 @@ def nan_helper(y):
     """
     return np.isnan(y), lambda z: z.nonzero()[0]
 
-def extract_data(data, *, datacutoff = 0):
-    data = pd.read_csv(data, header = datacutoff)
+def extract_data(cwd, data, *, datacutoff = 0):
+    name = cwd + '/' + data
+    data = pd.read_csv(name, header = datacutoff)
     return data.values 
 
 def nameandtime(data):

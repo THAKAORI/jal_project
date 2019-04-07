@@ -6,6 +6,8 @@ Created on Fri Mar 22 21:49:18 2019
 @author: takahiro
 """
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
+import numpy as np
 
 def plotaccveldata(datas, name, landing, geardown, autopilotoff):
     plt.figure(figsize=(20,10))
@@ -38,3 +40,14 @@ def plotaccveldata(datas, name, landing, geardown, autopilotoff):
     plt.tight_layout()
     #plt.savefig(name + ".pdf")
     plt.show()
+
+def scatter_polyfit(data, name, datadir):
+    pdf = PdfPages(datadir + "/" + name + ".pdf")
+    for i in range(1, data.shape[1]):
+        plt.figure()
+        plt.scatter(data[:,0], data[:,i], s= 5)
+        plt.plot(data[:,0], np.poly1d(np.polyfit(data[:,0], data[:,i], 5))(data[:,0]), color = 'red')
+        # plt.xlim(0, np.amax(result[:,0]) + 100)
+        # plt.ylim(0, np.amax(result[:,1]) + 0.001)
+        pdf.savefig()
+    pdf.close()
